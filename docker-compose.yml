@@ -2,7 +2,7 @@
 
 services:
   db:
-    image: mysql:current
+    image: mysql:latest
     environment:
       MYSQL_DATABASE: hong      
       MYSQL_ROOT_PASSWORD: 1234      
