@@ -21,7 +21,12 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
-      # 3. EC2로 코드 배포 및 도커 컨테이너 재시작
+      # 3. SSH 연결 테스트 (디버깅용)
+      - name: Test SSH connection
+        run: |
+          ssh -o StrictHostKeyChecking=no -v ubuntu@15.164.49.6 "echo 'SSH connection successful'"
+
+      # 4. EC2로 코드 배포 및 도커 컨테이너 재시작
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@15.164.49.6 << 'EOF'
