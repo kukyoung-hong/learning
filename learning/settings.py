@@ -35,7 +35,7 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','121.166.87.196','nginx'] #허용하는 호스트 설정 우리 프로그램에는 nginx가 오지 클라이언트가 바로오지 않는다.
+ALLOWED_HOSTS = ['localhost','127.0.0.1','13.124.232.141','nginx'] #허용하는 호스트 설정 우리 프로그램에는 nginx가 오지 클라이언트가 바로오지 않는다.
 
 
 # Application definition
