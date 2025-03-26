@@ -1,0 +1,72 @@
+/* myapp/static/css/style.css */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* 컨테이너: 한 행에 3개씩 */
+.news-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* 카드 간격 */
+    padding: 20px;
+}
+
+/* 카드 스타일 */
+.news-card {
+    width: calc(33.33% - 14px); /* 3개씩, gap 고려 */
+    height: 400px; /* 고정 높이 */
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 이미지: 상단 80% */
+.news-card img {
+    width: 100%;
+    height: 80%; /* 카드 높이의 80% */
+    object-fit: cover; /* 비율 유지하며 잘림 */
+}
+
+/* 텍스트 영역: 나머지 20% */
+.news-content {
+    flex-grow: 1; /* 남은 공간 채움 */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 제목: 생략 처리 */
+.news-content h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 넘치면 ... */
+}
+
+/* 설명: 생략 처리 */
+.news-content p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 2줄까지만 표시 */
+    -webkit-box-orient: vertical;
+}
+
+/* 링크 */
+.news-content a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.news-content a:hover {
+    text-decoration: underline;
+}
