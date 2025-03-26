@@ -1,0 +1,5 @@
+.env.dev
+.env.prod
+.venv/
+staticfiles/
+myapp_backup.sql

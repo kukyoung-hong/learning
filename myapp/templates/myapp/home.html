@@ -1,0 +1,112 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}
+My News Service
+{% endblock %}
+
+{% block container %}
+<div class="container mt-3">
+    <h1>News Service</h1>
+
+    <!-- 로그인 상태에 따른 표시 -->
+    {% if user.is_authenticated %}
+        <div class="alert alert-success" role="alert">
+            안녕하세요, {{ user.username }}님! 로그인이 완료되었습니다.
+            <!-- 수정된 부분 시작: category 드롭다운 버튼 -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    category
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="?category=1"> business</a></li>
+                    <li><a class="dropdown-item" href="?category=2"> sports</a></li>
+                    <li><a class="dropdown-item" href="?category=3"> health</a></li>
+                    <li><a class="dropdown-item" href="?category=4"> entertainment</a></li>
+                    <li><a class="dropdown-item" href="?category=5"> technology</a></li>
+                    <li><a class="dropdown-item" href="?category=6"> science</a></li>
+                    <li><a class="dropdown-item" href="?category=7"> general</a></li>
+                </ul>
+            </div>
+            <!-- 수정된 부분 끝 -->
+
+        </div>
+        
+        <div class="mb-3">
+            <a href="{% url 'accounts:logout' %}" class="btn btn-danger">로그아웃</a>
+        </div>
+    {% else %}
+        <div class="mb-3">
+            <a href="{% url 'accounts:signup' %}" class="btn btn-primary">Sign Up</a>
+            <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary ms-2">Login</a>
+        </div>
+    {% endif %}
+
+    <!-- 뉴스 컨텐츠 -->
+    <div class="news-container">
+        {% for article in articles %}
+            <div class="news-card">
+                {% if article.urltoimage %}
+                    <img src="{{ article.urltoimage }}" alt="">
+                {% else %}
+                    <img src="{% static 'images/news.png' %}" alt="">
+                {% endif %}
+                <div class="news-content">
+                    <h3>{{ article.title }}</h3>
+                    <p>{{ article.description }}</p>
+                    {% if user.is_authenticated %}
+                        <a href="{{ article.url }}" target="_blank">기사 보기</a>
+                    {% else %}
+                        <p><a href="{% url 'accounts:login' %}">로그인 후 기사 보기</a></p>
+                        <!-- 추가된 부분 시작: category 버튼 -->
+                        <!-- 추가된 부분 끝 -->
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- 수정된 부분 시작: 페이징 내비게이션 (페이지 번호 10개씩 표시) -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if articles.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ articles.previous_page_number }}">이전</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">이전</a>
+                </li>
+            {% endif %}
+
+            <!-- 페이지 번호를 10개씩 끊어서 표시 -->
+            {% with start_page=articles.number|add:"-5" end_page=articles.number|add:"4" %}
+                {% for num in articles.paginator.page_range %}
+                    {% if num >= start_page and num <= end_page %}
+                        {% if articles.number == num %}
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+
+            {% if articles.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ articles.next_page_number }}">다음</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">다음</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <!-- 수정된 부분 끝 -->
+</div>
+{% endblock %}

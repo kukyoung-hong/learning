@@ -1,0 +1,67 @@
+# version: '3.8'
+
+services:
+  db:
+    image: mysql:current
+    environment:
+      MYSQL_DATABASE: hong      
+      MYSQL_ROOT_PASSWORD: 1234      
+    ports:
+      - "3306:3306"
+    volumes:
+      # MySQL 데이터베이스 파일을 호스트에 저장
+      - mysql_data:/var/lib/mysql   
+      # MySQL 초기 데이터베이스 파일을 호스트에 저장
+      # MySQL의 공식 docker-entrypoint.sh 스크립트는 컨테이너가 처음 실행될 때 /docker-entrypoint-initdb.d/ 디렉터리에 있는 모든 .sql 파일을 자동으로 실행합니다.
+      # 백업파일을 하나 먼저 만들고(./newsdb_backup.sql) 컨테이너에 올린다.
+      - ./myapp_backup.sql:/docker-entrypoint-initdb.d/myapp_backup.sql
+    networks:
+      - mynetwork
+
+  web:
+    build: 
+    # .은 컨테이너를 만들기 위한 현재 작업디렉토리
+      context: .
+      dockerfile: Dockerfile
+
+    image: news_web:latest
+    container_name: news_web
+    restart: always
+    
+    # 개발중에만 사용 / 배포용으로는 주석처리
+    # volumes:
+    #   - .:/app
+    ports:
+      - "8000:8000"
+    #위 db랑 의존
+    depends_on:
+      - db
+    #네트워크도 위랑 같은 이름
+    networks:
+      - mynetwork
+    env_file:
+      - .env.prod  
+    volumes:
+      - static_volume:/app/staticfiles  # 공유 static
+      
+
+  nginx:
+    image: nginx:latest
+    container_name: news_nginx
+    #80번 포트는 웹서버 기본이다 .www.naver.com:80 이런식으로 안한다
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/app/staticfiles  # 공유 static
+    depends_on:
+      - web
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+
+volumes:
+  mysql_data:
+  static_volume:  # ✅ Django와 nginx가 공유하는 볼륨

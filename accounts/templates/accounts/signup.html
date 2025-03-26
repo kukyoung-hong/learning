@@ -1,0 +1,65 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}
+회원가입
+{% endblock %}
+
+{% block container %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4">회원가입</h1>
+                    
+                    
+
+                    <!-- 회원가입 폼 -->
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">ID</label>
+                            <input type="text" class="form-control" id="username" name="username" required placeholder="아이디를 입력하세요">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required placeholder="이메일을 입력하세요">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password1" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password1" name="password1" required placeholder="비밀번호를 입력하세요">
+                        </div>
+                        <div class="mb-4">
+                            <label for="password2" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="password2" name="password2" required placeholder="비밀번호를 다시 입력하세요">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">가입하기</button>
+                    </form>
+                    <!-- 오류 메시지 표시 -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    {% if field.name == 'password1' or field.name == 'password2' %}
+                                        <p><strong>비밀번호 오류:</strong> {{ error }}</p>
+                                    {% else %}
+                                        <p>{{ error }}</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <p><strong>비밀번호 오류:</strong> {{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- 로그인 링크 추가 (선택) -->
+                    <div class="text-center mt-3">
+                        <p>이미 계정이 있나요? <a href="{% url 'accounts:login' %}" class="text-primary">로그인</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
