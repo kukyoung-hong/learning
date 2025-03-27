@@ -88,10 +88,10 @@ WSGI_APPLICATION = 'learning.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME', 'hong'),
-        'USER': os.getenv('DB_USER', 'root'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'defaultpass'),
-        'HOST': os.getenv('DB_HOST', 'db'), # 서비스 이름
+        'NAME': 'hong',
+        'USER': 'admin',
+        'PASSWORD': '25959427qq^^',
+        'HOST': 'database-1.cneysykkupcj.ap-northeast-2.rds.amazonaws.com', # 서비스 이름
         'PORT': '3306',
     }
 }
