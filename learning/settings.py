@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'learning.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hong',
+        'NAME': 'db',
         'USER': 'admin',
         'PASSWORD': '25959427qq^^',
         'HOST': 'database-1.cneysykkupcj.ap-northeast-2.rds.amazonaws.com', # 서비스 이름
